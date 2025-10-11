@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProductList from '../components/ProductList'
 
 export default function Home({ onAdd }){
@@ -25,3 +25,4 @@ export default function Home({ onAdd }){
     </main>
   )
 }
+
