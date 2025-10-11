@@ -1,4 +1,3 @@
-import React from 'react'
 import './cart.css'
 
 export default function Cart({ items, onRemove }){
@@ -27,3 +26,4 @@ export default function Cart({ items, onRemove }){
     </aside>
   )
 }
+
