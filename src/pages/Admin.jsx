@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
+import { useProducts } from '../context/ProductsContext'
+import { useState } from "react"
 
 export default function Admin() {
-    const [products, setProducts] = useState([])
+    const { products, addProduct, updateProduct, deleteProduct } = useProducts()
     const [form, setForm] = useState({
         nombre: '', detalle: '', imagen: '', precio: ''
     })
@@ -10,23 +11,31 @@ export default function Admin() {
     const [showModal, setShowModal] = useState(false)
     const [editingId, setEditingId] = useState(null)
 
-    useEffect(() => {
-        fetchProducts()
-    }, [])
-
-    function fetchProducts() {
-        fetch('https://692477473ad095fb847450fd.mockapi.io/productos')
-            .then(res => res.json())
-            .then(data => setProducts(data))
-            .catch(err => console.error(err))
-    }
-
     function validate() {
         const e = {}
         if (!form.nombre.trim()) e.nombre = 'Nombre es requerido'
-        if (!form.detalle.trim()) e.detalle = 'Detalle es requerido'
+
+        // Validación de descripción: mínimo 10 caracteres
+        if (!form.detalle.trim()) {
+            e.detalle = 'Detalle es requerido'
+        } else if (form.detalle.trim().length < 10) {
+            e.detalle = 'El detalle debe tener al menos 10 caracteres'
+        }
+
         if (!form.imagen.trim()) e.imagen = 'Imagen es requerido'
-        if (!form.precio.trim()) e.precio = 'Precio es requerido'
+
+        // Validación de precio: debe ser un número mayor a 0
+        if (!form.precio.trim()) {
+            e.precio = 'Precio es requerido'
+        } else {
+            const precioNum = parseFloat(form.precio)
+            if (isNaN(precioNum)) {
+                e.precio = 'El precio debe ser un número válido'
+            } else if (precioNum <= 0) {
+                e.precio = 'El precio debe ser mayor a 0'
+            }
+        }
+
         return e
     }
 
@@ -54,38 +63,37 @@ export default function Admin() {
         setShowModal(true)
     }
 
-    function handleDelete(id) {
+    async function handleDelete(id) {
         if (!window.confirm('¿Estás seguro de eliminar este producto?')) return
 
-        fetch(`https://692477473ad095fb847450fd.mockapi.io/productos/${id}`, {
-            method: 'DELETE'
-        })
-            .then(() => fetchProducts())
-            .catch(err => console.error(err))
+        console.log('Eliminando producto con ID:', id)
+        const result = await deleteProduct(id)
+        console.log('Resultado de eliminación:', result)
+
+        if (result.success) {
+            setSubmitted(true)
+            setTimeout(() => setSubmitted(false), 3000)
+        } else {
+            alert(`Error al eliminar producto: ${result.error || 'Error desconocido'}`)
+        }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         const v = validate()
         setErrors(v)
         if (Object.keys(v).length === 0) {
-            const method = editingId ? 'PUT' : 'POST'
-            const url = editingId
-                ? `https://692477473ad095fb847450fd.mockapi.io/productos/${editingId}`
-                : 'https://692477473ad095fb847450fd.mockapi.io/productos'
+            const result = editingId
+                ? await updateProduct(editingId, form)
+                : await addProduct(form)
 
-            fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form)
-            })
-                .then(() => {
-                    setSubmitted(true)
-                    fetchProducts()
-                    setShowModal(false)
-                    setTimeout(() => setSubmitted(false), 3000)
-                })
-                .catch(err => console.error(err))
+            if (result.success) {
+                setSubmitted(true)
+                setShowModal(false)
+                setTimeout(() => setSubmitted(false), 3000)
+            } else {
+                setErrors({ submit: result.error })
+            }
         }
     }
 
@@ -153,9 +161,18 @@ export default function Admin() {
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Precio</label>
-                                        <input name="precio" className={`form-control ${errors.precio ? 'is-invalid' : ''}`} value={form.precio} onChange={handleChange} />
+                                        <input
+                                            name="precio"
+                                            type="number"
+                                            step="0.01"
+                                            min="0.01"
+                                            className={`form-control ${errors.precio ? 'is-invalid' : ''}`}
+                                            value={form.precio}
+                                            onChange={handleChange}
+                                        />
                                         {errors.precio && <div className="invalid-feedback">{errors.precio}</div>}
                                     </div>
+                                    {errors.submit && <div className="alert alert-danger">{errors.submit}</div>}
                                     <div className="d-flex justify-content-end gap-2">
                                         <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancelar</button>
                                         <button type="submit" className="btn btn-primary">{editingId ? 'Guardar Cambios' : 'Agregar'}</button>

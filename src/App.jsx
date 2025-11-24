@@ -38,12 +38,15 @@ function AppContent() {
 }
 
 import { ThemeProvider } from './context/ThemeContext';
+import { ProductsProvider } from './context/ProductsContext';
 
 function App() {
 
   return (
     <ThemeProvider>
-      <AuthProvider Ingreso={<AppContent />} />
+      <ProductsProvider>
+        <AuthProvider Ingreso={<AppContent />} />
+      </ProductsProvider>
     </ThemeProvider>
   )
 }
