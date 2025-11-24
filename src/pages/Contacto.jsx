@@ -1,32 +1,31 @@
 import { useState } from 'react'
-import './contacto.css'
 
-export default function Contacto(){
+export default function Contacto() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' })
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
 
-  function validate(){
+  function validate() {
     const e = {}
-    if(!form.name.trim()) e.name = 'Nombre es requerido'
-    if(!form.phone.trim()) e.phone = 'Teléfono es requerido'
-    else if(!/^[0-9]+$/.test(form.phone)) e.phone = 'Teléfono debe contener sólo números'
-    if(!form.email.trim()) e.email = 'Email es requerido'
-    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Email inválido'
-    if(!form.message.trim()) e.message = 'Mensaje es requerido'
+    if (!form.name.trim()) e.name = 'Nombre es requerido'
+    if (!form.phone.trim()) e.phone = 'Teléfono es requerido'
+    else if (!/^[0-9]+$/.test(form.phone)) e.phone = 'Teléfono debe contener sólo números'
+    if (!form.email.trim()) e.email = 'Email es requerido'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Email inválido'
+    if (!form.message.trim()) e.message = 'Mensaje es requerido'
     return e
   }
 
-  function handleChange(e){
+  function handleChange(e) {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault()
     const v = validate()
     setErrors(v)
-    if(Object.keys(v).length === 0){
+    if (Object.keys(v).length === 0) {
       setSubmitted(true)
       setForm({ name: '', phone: '', email: '', message: '' })
       setTimeout(() => setSubmitted(false), 4000)
@@ -34,35 +33,35 @@ export default function Contacto(){
   }
 
   return (
-    <main className="contact-page">
-      <h2>Contacto</h2>
-      <form onSubmit={handleSubmit} noValidate className="contact-form">
-        <label>
-          Nombre
-          <input name="name" value={form.name} onChange={handleChange} />
-          {errors.name && <div className="error">{errors.name}</div>}
-        </label>
+    <main className="container py-4">
+      <h2 className="mb-4">Contacto</h2>
+      <form onSubmit={handleSubmit} noValidate className="mx-auto" style={{ maxWidth: '600px' }}>
+        <div className="mb-3">
+          <label className="form-label">Nombre</label>
+          <input name="name" className={`form-control ${errors.name ? 'is-invalid' : ''}`} value={form.name} onChange={handleChange} />
+          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+        </div>
 
-        <label>
-          Teléfono
-          <input name="phone" value={form.phone} onChange={handleChange} />
-          {errors.phone && <div className="error">{errors.phone}</div>}
-        </label>
+        <div className="mb-3">
+          <label className="form-label">Teléfono</label>
+          <input name="phone" className={`form-control ${errors.phone ? 'is-invalid' : ''}`} value={form.phone} onChange={handleChange} />
+          {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
+        </div>
 
-        <label>
-          Email
-          <input name="email" value={form.email} onChange={handleChange} />
-          {errors.email && <div className="error">{errors.email}</div>}
-        </label>
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input name="email" className={`form-control ${errors.email ? 'is-invalid' : ''}`} value={form.email} onChange={handleChange} />
+          {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+        </div>
 
-        <label>
-          Mensaje
-          <textarea name="message" value={form.message} onChange={handleChange} />
-          {errors.message && <div className="error">{errors.message}</div>}
-        </label>
+        <div className="mb-3">
+          <label className="form-label">Mensaje</label>
+          <textarea name="message" className={`form-control ${errors.message ? 'is-invalid' : ''}`} value={form.message} onChange={handleChange} rows="4" />
+          {errors.message && <div className="invalid-feedback">{errors.message}</div>}
+        </div>
 
-        <button type="submit">Enviar</button>
-        {submitted && <div className="success">Mensaje enviado correctamente</div>}
+        <button type="submit" className="btn btn-primary">Enviar</button>
+        {submitted && <div className="alert alert-success mt-3">Mensaje enviado correctamente</div>}
       </form>
     </main>
   )
