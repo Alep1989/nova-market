@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import ProductCard from './ProductCard'
 
 export default function ProductList({ products, onAdd }) {
@@ -12,3 +13,18 @@ export default function ProductList({ products, onAdd }) {
     </section>
   )
 }
+=======
+import ProductCard from './ProductCard'
+import './productlist.css'
+
+export default function ProductList({ products, onAdd }){
+  if(!products) return null
+  return (
+    <section className="product-list">
+      {products.map(p => (
+        <ProductCard key={p.id} product={p} onAdd={onAdd} />
+      ))}
+    </section>
+  )
+}
+>>>>>>> 20fbfeed492d95954dedfb3d16f74ce02d4ae96e

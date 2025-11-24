@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useTheme } from "../context/ThemeContext"
 
 export default function Footer() {
@@ -35,3 +36,14 @@ export default function Footer() {
     </footer>
   )
 }
+=======
+import './footer.css'
+
+export default function Footer(){
+  return (
+    <footer className="nm-footer">
+      <div className="container">© {new Date().getFullYear()} Nova Market</div>
+    </footer>
+  )
+}
+>>>>>>> 20fbfeed492d95954dedfb3d16f74ce02d4ae96e

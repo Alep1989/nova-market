@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root{
   --bg: #f6fbff;
   --card: #ffffff;
@@ -19,3 +20,26 @@ body{
   margin: 0 auto;
   padding: 1rem;
 }
+=======
+:root{
+  --bg: #f6fbff;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --primary: #4f46e5; /* indigo */
+  --accent: #06b6d4; /* teal */
+  --text: #0f172a;
+  --radius: 10px;
+}
+
+body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+.container{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+>>>>>>> 20fbfeed492d95954dedfb3d16f74ce02d4ae96e

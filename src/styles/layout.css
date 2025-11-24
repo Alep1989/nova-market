@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Basic layout styles for header/footer and grid */
 .nm-header{
   background: linear-gradient(90deg, rgba(79,70,229,0.06), rgba(6,182,212,0.04));
@@ -46,3 +47,53 @@
   .nm-container{flex-direction: column}
   .cart{width:100%}
 }
+=======
+/* Basic layout styles for header/footer and grid */
+.nm-header{
+  background: linear-gradient(90deg, rgba(79,70,229,0.06), rgba(6,182,212,0.04));
+  border-bottom: 1px solid rgba(15,23,42,0.04);
+}
+.brand{
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+.nm-nav a{
+  margin-left: 1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.nm-nav a.active{
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.nm-container{
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.main-content{
+  flex: 1 1 0;
+}
+
+.cart{
+  width: 320px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+}
+
+.cart-sidebar{
+  width: 340px;
+  flex: 0 0 340px;
+}
+
+@media (max-width: 800px){
+  .nm-container{flex-direction: column}
+  .cart{width:100%}
+}
+>>>>>>> 20fbfeed492d95954dedfb3d16f74ce02d4ae96e
