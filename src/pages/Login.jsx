@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import Swal from 'sweetalert2';
 
 export default function Login({ onSuccess }) {
   const { login } = useAuth();
@@ -16,15 +17,33 @@ export default function Login({ onSuccess }) {
       .then(users => {
         const foundUser = users.find(u => u.usuario === usser && u.password === password);
         if (foundUser) {
-          login(foundUser.usuario);
-          onSuccess();
+          Swal.fire({
+            icon: 'success',
+            title: '¡Bienvenido!',
+            text: 'Has iniciado sesión correctamente',
+            timer: 1500,
+            showConfirmButton: false
+          }).then(() => {
+            login(foundUser.usuario);
+            onSuccess();
+          });
         } else {
-          alert('Credenciales incorrectas');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de autenticación',
+            text: 'Credenciales incorrectas',
+            confirmButtonColor: '#4f46e5'
+          });
         }
       })
       .catch(err => {
         console.error('Error fetching users:', err);
-        alert('Error al iniciar sesión');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo conectar con el servidor',
+          confirmButtonColor: '#4f46e5'
+        });
       });
   };
 

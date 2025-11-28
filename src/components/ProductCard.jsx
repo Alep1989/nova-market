@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
+import { formatPrice } from '../utils/formatPrice';
 
 export default function ProductCard({ product, onAdd }) {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ export default function ProductCard({ product, onAdd }) {
         <h3 className="card-title h6 mb-2">
           <Link to={`/product/${product.id}`} className="text-decoration-none text-dark stretched-link">{product.nombre}</Link>
         </h3>
-        <p className="card-text fw-bold text-primary mb-3">${product.precio}</p>
+        <p className="card-text fw-bold text-primary mb-3">{formatPrice(product.precio)}</p>
         {user && (
           <button onClick={(e) => { e.preventDefault(); onAdd(product); }} className="btn btn-primary mt-auto w-100 position-relative" style={{ zIndex: 2 }}>
             Agregar

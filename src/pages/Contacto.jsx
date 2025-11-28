@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Swal from 'sweetalert2'
 
 export default function Contacto() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' })
@@ -28,6 +29,12 @@ export default function Contacto() {
     if (Object.keys(v).length === 0) {
       setSubmitted(true)
       setForm({ name: '', phone: '', email: '', message: '' })
+      Swal.fire({
+        icon: 'success',
+        title: '¡Mensaje enviado!',
+        text: 'Nos pondremos en contacto contigo a la brevedad.',
+        confirmButtonColor: '#4f46e5'
+      })
       setTimeout(() => setSubmitted(false), 4000)
     }
   }
@@ -61,7 +68,6 @@ export default function Contacto() {
         </div>
 
         <button type="submit" className="btn btn-primary">Enviar</button>
-        {submitted && <div className="alert alert-success mt-3">Mensaje enviado correctamente</div>}
       </form>
     </main>
   )

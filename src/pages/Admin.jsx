@@ -1,5 +1,7 @@
 import { useProducts } from '../context/ProductsContext'
 import { useState } from "react"
+import Swal from 'sweetalert2'
+import { formatPrice } from '../utils/formatPrice'
 
 export default function Admin() {
     const { products, addProduct, updateProduct, deleteProduct } = useProducts()
@@ -7,7 +9,6 @@ export default function Admin() {
         nombre: '', detalle: '', imagen: '', precio: ''
     })
     const [errors, setErrors] = useState({})
-    const [submitted, setSubmitted] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [editingId, setEditingId] = useState(null)
 
@@ -64,17 +65,35 @@ export default function Admin() {
     }
 
     async function handleDelete(id) {
-        if (!window.confirm('¿Estás seguro de eliminar este producto?')) return
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        })
+
+        if (!result.isConfirmed) return
 
         console.log('Eliminando producto con ID:', id)
-        const result = await deleteProduct(id)
-        console.log('Resultado de eliminación:', result)
+        const deleteResult = await deleteProduct(id)
+        console.log('Resultado de eliminación:', deleteResult)
 
-        if (result.success) {
-            setSubmitted(true)
-            setTimeout(() => setSubmitted(false), 3000)
+        if (deleteResult.success) {
+            Swal.fire(
+                '¡Eliminado!',
+                'El producto ha sido eliminado.',
+                'success'
+            )
         } else {
-            alert(`Error al eliminar producto: ${result.error || 'Error desconocido'}`)
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `Error al eliminar producto: ${deleteResult.error || 'Error desconocido'}`
+            })
         }
     }
 
@@ -88,9 +107,14 @@ export default function Admin() {
                 : await addProduct(form)
 
             if (result.success) {
-                setSubmitted(true)
                 setShowModal(false)
-                setTimeout(() => setSubmitted(false), 3000)
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: editingId ? 'Producto actualizado correctamente' : 'Producto agregado correctamente',
+                    timer: 2000,
+                    showConfirmButton: false
+                })
             } else {
                 setErrors({ submit: result.error })
             }
@@ -103,8 +127,6 @@ export default function Admin() {
                 <h3>Panel de Administración</h3>
                 <button className="btn btn-success" onClick={openAddModal}>Agregar Producto Nuevo</button>
             </div>
-
-            {submitted && <div className="alert alert-success">Operación exitosa</div>}
 
             <div className="row g-3">
                 {products.map(p => (
@@ -121,7 +143,7 @@ export default function Admin() {
                                 <div className="flex-grow-1">
                                     <h5 className="mb-1">{p.nombre}</h5>
                                     <p className="mb-1 text-muted small">{p.detalle}</p>
-                                    <div className="fw-bold text-primary">${p.precio}</div>
+                                    <div className="fw-bold text-primary">{formatPrice(p.precio)}</div>
                                 </div>
                                 <div className="d-flex flex-column gap-2">
                                     <button className="btn btn-primary btn-sm" onClick={() => handleEdit(p)}>Editar</button>

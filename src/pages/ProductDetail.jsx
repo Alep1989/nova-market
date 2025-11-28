@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { formatPrice } from '../utils/formatPrice'
 
 export default function ProductDetail({ onAdd }) {
   const { id } = useParams()
@@ -33,8 +34,8 @@ export default function ProductDetail({ onAdd }) {
           {product.nombre}
         </div>
       )}
-      <p>{product.detalle}</p>
-      <p>Precio: ${product.precio}</p>
+      <p className="lead">{product.detalle}</p>
+      <h3 className="text-primary fw-bold my-4">{formatPrice(product.precio)}</h3>
       <button onClick={() => onAdd(product)}>Agregar al carrito</button>
     </article>
   )

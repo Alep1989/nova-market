@@ -147,3 +147,96 @@
   0%, 100% { opacity: 0.4; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.2); }
 }
+
+/* Smaller Vertical Theme Toggle for Header */
+.theme-switch-header {
+  --toggle-size: 20px;
+  width: 40px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #87ceeb;
+  transition: background-color 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.2);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.theme-switch-header .theme-switch-slider {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #fdd835;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), background-color 0.5s;
+  z-index: 2;
+}
+
+.theme-switch-checkbox:checked + .theme-switch-header {
+  background-color: #1e293b;
+}
+
+.theme-switch-checkbox:checked + .theme-switch-header .theme-switch-slider {
+  transform: translateX(20px);
+  background-color: #f1f5f9;
+  box-shadow: inset -2px -1px 3px rgba(0,0,0,0.1);
+}
+
+.theme-switch-header .theme-switch-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.theme-switch-checkbox:checked + .theme-switch-header .theme-switch-stars {
+  opacity: 1;
+}
+
+.theme-switch-header .star {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 1.5px;
+  height: 1.5px;
+  animation: twinkle 2s infinite ease-in-out;
+}
+
+.theme-switch-header .star:nth-child(1) { top: 3px; left: 7px; animation-delay: 0s; }
+.theme-switch-header .star:nth-child(2) { top: 10px; left: 13px; animation-delay: 0.5s; width: 1px; height: 1px; }
+.theme-switch-header .star:nth-child(3) { top: 5px; left: 23px; animation-delay: 1s; }
+.theme-switch-header .star:nth-child(4) { top: 13px; left: 30px; animation-delay: 1.5s; width: 1px; height: 1px; }
+
+.theme-switch-header .theme-switch-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.theme-switch-checkbox:checked + .theme-switch-header .theme-switch-clouds {
+  opacity: 0;
+}
+
+.theme-switch-header .cloud {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 6px;
+  opacity: 0.8;
+}
+
+.theme-switch-header .cloud:nth-child(1) { top: 6px; right: 7px; width: 10px; height: 4px; }
+.theme-switch-header .cloud:nth-child(2) { top: 3px; right: 17px; width: 7px; height: 3px; }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Swal from 'sweetalert2'
 import { BrowserRouter } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -16,10 +17,27 @@ function AppContent() {
       if (exists) return prev.map(p => p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p)
       return [...prev, { ...product, quantity: 1 }]
     })
+
+    Swal.fire({
+      icon: 'success',
+      title: '¡Agregado!',
+      text: 'Producto agregado al carrito',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
   }
 
   function handleRemove(id) {
     setCartItems(prev => prev.filter(p => p.id !== id))
+  }
+
+  function handleUpdateQuantity(id, newQuantity) {
+    setCartItems(prev => prev.map(p =>
+      p.id === id ? { ...p, quantity: newQuantity } : p
+    ))
   }
 
   return (
@@ -30,6 +48,7 @@ function AppContent() {
           cartItems={cartItems}
           onAdd={handleAdd}
           onRemove={handleRemove}
+          onUpdateQuantity={handleUpdateQuantity}
         />
       </div>
       <Footer />

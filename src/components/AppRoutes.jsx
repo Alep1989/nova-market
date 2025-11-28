@@ -7,7 +7,7 @@ import Cart from './Cart';
 import Admin from '../pages/Admin';
 import RutaProtegida from './RutaProtegida';
 
-export default function AppRoutes({ cartItems, onAdd, onRemove }) {
+export default function AppRoutes({ cartItems, onAdd, onRemove, onUpdateQuantity }) {
   return (
     <div className="main-content">
       <Routes>
@@ -18,7 +18,7 @@ export default function AppRoutes({ cartItems, onAdd, onRemove }) {
           path="/cart"
           element={
             <RutaProtegida
-              Ingreso={<Cart items={cartItems} onRemove={onRemove} />}
+              Ingreso={<Cart items={cartItems} onRemove={onRemove} onUpdateQuantity={onUpdateQuantity} />}
             />
           }
         />

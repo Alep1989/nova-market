@@ -8,7 +8,7 @@ import { useTheme } from '../context/ThemeContext';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [showLoginPopover, setShowLoginPopover] = useState(false);
   const loginRef = useRef(null);
 
@@ -74,6 +74,29 @@ export default function Navbar() {
                 <FaSignOutAlt />
               </Button>
             )}
+
+            {/* Theme Toggle */}
+            <label className="theme-switch-wrapper ms-3" style={{ display: 'inline-block', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                className="theme-switch-checkbox"
+                checked={theme === 'dark'}
+                onChange={toggleTheme}
+              />
+              <div className="theme-switch-header">
+                <div className="theme-switch-stars">
+                  <div className="star"></div>
+                  <div className="star"></div>
+                  <div className="star"></div>
+                  <div className="star"></div>
+                </div>
+                <div className="theme-switch-clouds">
+                  <div className="cloud"></div>
+                  <div className="cloud"></div>
+                </div>
+                <div className="theme-switch-slider"></div>
+              </div>
+            </label>
           </div>
         </BSNavbar.Collapse>
       </Container>
